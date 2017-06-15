@@ -1,0 +1,49 @@
+Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it. As part of your answer, give some background on the dataset and how it can be used to answer the project question. Were there any outliers in the data when you got it, and how did you handle those?  [relevant rubric items: “data exploration”, “outlier investigation”]
+
+The goal of the project is to develop an algorithm that will identify Enron employee who lkeily committed fraud. The dataset cosnsits of Enron email and financial data compiled into a dictionary.  Each key-value pair in the dictionary corresponds to one person. The dictionary key is the person's name, and the value is another dictionary, which contains the names of all the features and their values for that person. The features in the data fall into three major types, namely financial features, email features and POI labels. 
+
+There were outliers in the data namely TOTAL, THE TRAVEL AGENCY, LOCKHART EUGENE E ). THE TRAVEL AGENCY and TOTAL are not real persons and should be taken out. Mr. Lockhart does not have any data to his name. All emails adresses have NaN and can be taken out, and there are 146 people, with 21 features. 128 of people are non-POI and 18 are POI.
+
+What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not? As part of the assignment, you should attempt to engineer your own feature that does not come ready-made in the dataset -- explain what feature you tried to make, and the rationale behind it. (You do not necessarily have to use it in the final analysis, only engineer and test it.) In your feature selection step, if you used an algorithm like a decision tree, please also give the feature importances of the features that you use, and if you used an automated feature selection function like SelectKBest, please report the feature scores and reasons for your choice of parameter values.  [relevant rubric items: “create new features”, “properly scale features”, “intelligently select feature”]
+
+I added some new features, based on log of financial data, to make sure that the data is not widely dispersed as it is. Aslo I created features for ratio of emails to and from POI persons to total emails. This helped to establish relative numbers instead of absolute ones.
+
+I used all the features as the algorithm I picked - Gradient Boosting is one of the ensemble methods and actually uses all the available features.
+
+I tried other algorithms namely Logistic tree and DecisionTree however they did not provide the results similar to GradientBoosting. For those algorithms I would need to employ feature selection and scaling. I actually run feature selection for Logistic regression and identified best fitting features, where all of them were financial and none of them really outstand from the others.
+
+I didn't use any scaling for the GradientBoosting as it was not necessary.
+
+
+What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?  [relevant rubric item: “pick an algorithm”]
+
+I selected GradientBoosting algorithm which helps combining the predictions of several base estimators built with a given learning algorithm in order to improve generalizability / robustness over a single estimator. The module provides methods for both classification and regression via gradient boosted regression trees. Maximum scores are under 'max_depth' parameter value of 10 in our list and they stay the same once they increase.
+
+The above algorithm differs from the linear algorithms like Logistic Regression and Decision Tree is that it actually combines predictions of several base estimators.
+
+What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? What parameters did you tune? (Some algorithms do not have parameters that you need to tune -- if this is the case for the one you picked, identify and briefly explain how you would have done it for the model that was not your final choice or a different model that does utilize parameter tuning, e.g. a decision tree classifier).  [relevant rubric item: “tune the algorithm”]
+
+Parameters of algorithm play a decisive role in the quality of the prediction. If the parameters are not tuned well then the resulting accuracy score, recall and precision scores would be either not acceptable or below the desired standard. Algorithms are usually very general in natures and as such should be tuned. I tuned the parameters by initially manually chaning them and then finally using the GridSearchCV. My final algorith had the following parameters, where max_depth = 1 and n_stimators = 10:
+
+GradientBoostingClassifier(criterion='friedman_mse', init=None,
+              learning_rate=0.1, loss='deviance', max_depth=1,
+              max_features=None, max_leaf_nodes=None,
+              min_impurity_split=1e-07, min_samples_leaf=1,
+              min_samples_split=2, min_weight_fraction_leaf=0.0,
+              n_estimators=10, presort='auto', random_state=None,
+              subsample=1.0, verbose=0, warm_start=False)
+
+If I used LogisticRegression and wanted to manually adjust it, I would select the best features by SelectK and MinMax them for scaling. I would also use PCA to combine similar feature. This can be done in a pipeline via GridSearch as well.
+
+What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?  [relevant rubric item: “validation strategy”]
+
+Validation allows to find a suitable result between bias and variance. High variance will result in overfitting the data while high bias will result in underfiting the data. As such, the data should be carefully split into training and testing sets. Best_estimator_ attribute of GridSearch provided the 1000 folds StratifiedShuffleSplit which returns same percentage of POI in each test set. 
+
+Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]
+
+I used three evaluation metrics - recall, precision and accuracy. After tuning they equalled: Accuracy = 0.896, recall = 0.5, precision 0.666666666667.
+Accuracy is not the best evaluation metric because of the sparcity of the label - POI. That is why precision and evaluation is used. Precision is the ratio of the model being correct for positive label to the total times of guess as positive labels. A higher precision score means less false positives.
+Recall ks the ratio of model being correct for positive labels as to total number of positive labels. A higher recall score means less false negatives.
+Recall is the most important criteria as we would need to find all people who were involved and then we would gradually clear them if they are innocent during the investigation.
+
+
