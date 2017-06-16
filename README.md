@@ -1,4 +1,6 @@
 # Machine-Learning-Enron-data
+Please refer to Summary_project.txt for the detailed Q&A
+
 Building an algorithm for predicting point of interest persons based on emails and compensation
 
 The goal of the project is to develop an algorithm that will identify Enron employee who lkeily committed fraud. The dataset cosnsits of Enron email and financial data compiled into a dictionary.  Each key-value pair in the dictionary corresponds to one person. The dictionary key is the person's name, and the value is another dictionary, which contains the names of all the features and their values for that person. The features in the data fall into three major types, namely financial features, email features and POI labels. 
