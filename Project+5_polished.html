@@ -13062,8 +13062,8 @@ BestK score:  0.772727272727
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Feature-importances-with-forests-of-trees&#182;">Feature importances with forests of trees&#182;<a class="anchor-link" href="#Feature-importances-with-forests-of-trees&#182;">&#182;</a></h4><p>We will build a graph to see which features are important for Gaussian NB and as we can see, majority of features are importants but first six features are especially important.  Features have decreasing importance over each feature. The most important features are payment related ones.
-<a href="http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html">http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html</a></p>
+<h4 id="Feature-importances-with-forests-of-trees&#182;">Feature importances with forests of trees&#182;<a class="anchor-link" href="#Feature-importances-with-forests-of-trees&#182;">&#182;</a></h4><p>We will build a graph to see which features are important for Gaussian NB and as we can see, majority of features are importants but first six features are especially important.  Features have decreasing importance over each feature. The most important features are payment related ones.</p>
+<h5 id="First-six-features-seems-to-provide-the-best-result-and-there-is-a-drop-in-feature-performance-from-9th-to-10th-feature-and-15th-and-16th-feature----I-am-going-to-explore-it-in-Gridsearch-below.">First six features seems to provide the best result and there is a drop in feature performance from 9th to 10th feature and 15th and 16th feature -  I am going to explore it in Gridsearch below.<a class="anchor-link" href="#First-six-features-seems-to-provide-the-best-result-and-there-is-a-drop-in-feature-performance-from-9th-to-10th-feature-and-15th-and-16th-feature----I-am-going-to-explore-it-in-Gridsearch-below.">&#182;</a></h5><p><a href="http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html">http://scikit-learn.org/stable/auto_examples/ensemble/plot_forest_importances.html</a></p>
 
 </div>
 </div>
@@ -13414,6 +13414,26 @@ wszMzHLhpMLMzMxy8f8BTXl3qRIcH04AAAAASUVORK5CYII=
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#GaussianNB, it has no parameters to adjust, so I will try selectKbest later</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">labels_train</span><span class="p">)</span>
+<span class="n">pred</span><span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+<span class="n">acc</span><span class="o">=</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span><span class="n">pred</span><span class="p">)</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span><span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s2">&quot;GaussianNB precision score&quot;</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="s1">&#39;recall score&#39;</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">acc</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -13541,15 +13561,27 @@ Returns acceptable results on our training data set but not on tester.py</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="GridSearch-CV-on-Gaussian-NB---great-results">GridSearch CV on Gaussian NB - great results<a class="anchor-link" href="#GridSearch-CV-on-Gaussian-NB---great-results">&#182;</a></h4><p>As we discussed above, Gradient Boosting did not return acceptable results in tester.py and GaussianNB showed promising results when we experimented with feature selection. So we are going to apply GridSearchCV on GaussianNB.
-I applied minimum 5 features as it showed good results in feature selections. I also tried applying PCA but it didn't return great results with this algorithm. When I took out the PCA, and showed acceptable results.</p>
+I started applying minimum 5 features as it showed good results in feature selections and then was experimenting with more features, and 9 and 16 features brought the best results.</p>
+<p>I also tried applying PCA but it didn't return great results with this algorithm. When I took out the PCA, and showed acceptable results.</p>
 <p>I selected Gaussian NB algorithm because it showed great results on selected features and without even applying PCA. Initially, I thought that the GradientBoosting will work however it did not on tester.py data, probably because of cross validations issues and the fact that there were too many features to be used.</p>
-<p>Final top five features selected were as below:</p>
+<p>Final top sixteen features selected were as below:</p>
 <ol>
 <li>salary </li>
 <li>deferral_payments</li>
 <li>total_payments </li>
 <li>exercised_stock_options </li>
 <li>bonus </li>
+<li>restricted_stock </li>
+<li>restricted_stock_deferred </li>
+<li>total_stock_value </li>
+<li>expenses </li>
+<li>feature loan_advances </li>
+<li>feature other </li>
+<li>feature director_fees </li>
+<li>feature deferred_income </li>
+<li>feature long_term_incentive </li>
+<li>feature to_messages </li>
+<li>feature shared_receipt_with_poi </li>
 </ol>
 
 </div>
@@ -13560,7 +13592,7 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Algorithm-results">Algorithm results<a class="anchor-link" href="#Algorithm-results">&#182;</a></h4><table>
+<h4 id="Algorithm-results---comparision">Algorithm results - comparision<a class="anchor-link" href="#Algorithm-results---comparision">&#182;</a></h4><table>
 <thead><tr>
 <th>Algorithm</th>
 <th>Accuracy</th>
@@ -13578,16 +13610,16 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 <tbody>
 <tr>
 <td>GaussianNB()</td>
-<td>0.84673</td>
-<td>0.40743</td>
-<td>0.32900</td>
-<td>0.36404</td>
-<td>0.34217</td>
+<td>0.83833</td>
+<td>0.37035</td>
+<td>0.30350</td>
+<td>0.33361</td>
+<td>0.31487</td>
 <td>15000</td>
-<td>658</td>
-<td>957</td>
-<td>1342</td>
-<td>12043</td>
+<td>607</td>
+<td>1032</td>
+<td>1393</td>
+<td>11968</td>
 </tr>
 <tr>
 <td>GradientBoostingClassifier()</td>
@@ -13604,13 +13636,57 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 </tr>
 </tbody>
 </table>
+<h4 id="Gaussian-NB---different-features">Gaussian NB - different features<a class="anchor-link" href="#Gaussian-NB---different-features">&#182;</a></h4><table>
+<thead><tr>
+<th>No of features</th>
+<th>Accuracy</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1</th>
+<th>F2</th>
+<th>Total predictions</th>
+<th>True positives</th>
+<th>False positives</th>
+<th>False negatives</th>
+<th>True negatives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9</td>
+<td>0.83833</td>
+<td>0.37035</td>
+<td>0.30350</td>
+<td>0.33361</td>
+<td>0.31487</td>
+<td>15000</td>
+<td>607</td>
+<td>1032</td>
+<td>1393</td>
+<td>11968</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0.84927</td>
+<td>0.41553</td>
+<td>0.32100</td>
+<td>0.36220</td>
+<td>0.33630</td>
+<td>15000</td>
+<td>642</td>
+<td>903</td>
+<td>1358</td>
+<td>12097</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
@@ -13640,7 +13716,6 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 
 <span class="k">print</span> <span class="n">clf</span>
 <span class="k">print</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">features_test</span><span class="p">,</span> <span class="n">labels_test</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">,</span>
 </pre></div>
 
 </div>
@@ -13655,7 +13730,6 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Pipeline(steps=[(&#39;selectkbest&#39;, SelectKBest(k=8, score_func=&lt;function f_classif at 0x10bec7938&gt;)), (&#39;naive_bayes&#39;, GaussianNB(priors=None))])
 0.75
-{&#39;selectkbest__k&#39;: 8}
 </pre>
 </div>
 </div>
@@ -13663,6 +13737,43 @@ I applied minimum 5 features as it showed good results in feature selections. I 
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;selectkbest__k&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">27</span><span class="p">)}</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span><span class="c1">#(&#39;reduce_dim&#39;, PCA()),</span>
+                     <span class="p">(</span><span class="s1">&#39;selectkbest&#39;</span><span class="p">,</span> <span class="n">SelectKBest</span><span class="p">()),</span>
+                    <span class="p">(</span><span class="s1">&#39;naive_bayes&#39;</span><span class="p">,</span> <span class="n">GNB</span><span class="p">),</span> <span class="c1">#(&#39;min_max_scaler&#39;, scaler)</span>
+                    <span class="p">])</span>
+<span class="c1">#(&#39;min_max_scaler&#39;, scaler)]</span>
+<span class="n">grid_search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">param_grid</span> <span class="o">=</span> <span class="n">param_grid</span><span class="p">)</span>
+<span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pipeline(steps=[('selectkbest', SelectKBest(k=16, score_func=&lt;function f_classif at 0x10bba58c0&gt;)), ('naive_bayes', GaussianNB(priors=None))])
+0.883720930233
+{'selectkbest__k': 16} Pipeline(steps=[('selectkbest', SelectKBest(k=16, score_func=&lt;function f_classif at 0x10bba58c0&gt;)), ('naive_bayes', GaussianNB(priors=None))])
+    Accuracy: 0.84927    Precision: 0.41553    Recall: 0.32100    F1: 0.36220    F2: 0.33630
+    Total predictions: 15000    True positives:  642    False positives:  903    False negatives: 1358    True negatives: 12097</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -13681,8 +13792,8 @@ For other algorithms I used you can see parameter tuning above where I was exper
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Validation">Validation<a class="anchor-link" href="#Validation">&#182;</a></h4><p>Validation allows to find a suitable result between bias and variance. High variance will result in overfitting the data while high bias will result in underfiting the data. As such, the data should be carefully split into training and testing sets. 
-The train_test_split method was used to split the provided dataset (30% test, - 70% train), and then the GridSearchCV.</p>
+<h4 id="Validation">Validation<a class="anchor-link" href="#Validation">&#182;</a></h4><p>Validation allows to find a suitable result between bias and variance. High variance will result in overfitting the data while high bias will result in underfiting the data. As such, the data should be carefully split into training and testing sets. Validation also helps to deal with over-fitting where the model performed very good on training set but not an acceptable score on test.</p>
+<p>Cross-validation was performed via evaluate function in which created 1000 trials and divided the dataset into 3:1 training-to-test ratio. StratifiedSuffleSplit should be used rather than other splitting techniques avaible due to nature of the dataset with very low number of Persons of Interest. Therefore, the data need to be randomly  split the dataset into numerous trials and at the same time the fraction of POIs in each trials should be kept constant.</p>
 <h4 id="Evaluation">Evaluation<a class="anchor-link" href="#Evaluation">&#182;</a></h4><p>Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance. [relevant rubric item: “usage of evaluation metrics”]</p>
 <p>I used three evaluation metrics - recall, precision and accuracy. After tuning they equalled:</p>
 <ul>
@@ -13690,9 +13801,10 @@ The train_test_split method was used to split the provided dataset (30% test, - 
 <li>recall = 0.33, </li>
 <li>precision 0.41.</li>
 </ul>
-<p>Accuracy is not the best evaluation metric because of the sparcity of the label - POI. That is why precision and evaluation is used. Precision is the ratio of the model being correct for positive label to the total times of guess as positive labels. A higher precision score means less false positives.
-Recall ks the ratio of model being correct for positive labels as to total number of positive labels. A higher recall score means less false negatives.
-Recall is the most important criteria as we would need to find all people who were involved and then we would gradually clear them if they are innocent during the investigation.</p>
+<p>Accuracy is not the best evaluation metric because of the sparcity of the label - POI. That is why precision is is used. Precision is the ratio of the model being correct for positive label to the total times of identified positive labels. A higher precision score means less false positives. In our case, if we were using the model to judge whether or not to investigate someone as a possible person of interest, it would be how often the people we chose to investigate turned out to really be persons of interest.
+Recall is the ratio of model being correct for positive labels as to total actual number of positive labels. A higher recall score means less false negatives.
+Recall is the most important criteria as we would need to find all people who were involved and then we would gradually clear them if they are innocent during the investigation. In our case, if we were use the model to decide whether or not to investigate someone as a possible person of interest, it would be how many persons of interest did we identify out of the total amount of persons of interest that there were.</p>
+<p>For this project, I think that in this very important case, the most   recall is the most important criteria of evaluation. We need to identify all suspects and clear the suspects off once the investigation is under way.</p>
 
 </div>
 </div>

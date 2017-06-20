@@ -41,7 +41,7 @@ from sklearn.grid_search import GridSearchCV
 from sklearn.cross_validation import train_test_split
 from tester import dump_classifier_and_data
 from sklearn import preprocessing
-
+from tester import main
 
 sys.path.append("../tools/")
 
@@ -138,3 +138,5 @@ print clf
 print grid_search.best_estimator_.score(features_test, labels_test)
 print grid_search.best_params_,
 dump_classifier_and_data(clf, my_dataset, features_list)
+
+main()
