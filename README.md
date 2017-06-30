@@ -1,5 +1,8 @@
 # Machine-Learning-Enron-data
-Please refer to Project_5_polished.ipynb for the detailed report and code. Read it in nbviewer as it has an option of hiding code cells
+To view the report in html format:
+https://cdn.rawgit.com/saidamir/Machine-Learning-Enron-data/bb8c817c/Project%2B5_polished.html 
+
+Please refer to Project_5_polished.ipynb for the detailed code. Read it in nbviewer as it has an option of hiding code cells
 
 Building an algorithm for predicting point of interest persons based on emails and compensation
 
